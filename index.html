@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<script type="text/javascript">
+    window.top = {};
+    var array = [
+        "parent",
+        //"top",
+        //"location",
+        //"document",
+        "opener",
+        "open",
+        "alert",
+        "confirm",
+        "prompt"
+    ];
+    /*
+     * chrome\firefox 不能处理 top location document
+     * ie8、ie8不能处理 parent top location document  虽然opener可以覆盖，但不可访问
+     */
+    (function(p){
+        window["k"] = function(){
+            console.log(p);
+        }
+    })(parent);
+    for(var i = array.length;i--;){
+        try{
+            window[array[i]] = function(){};
+        }catch(e){
+            console.log(array[i]);
+        }
+    }
+    //删除HTMLElement.prototype
+    var arr = ["innerHTML","outerHTML","insertAdjacentElement","insertBefore","appendChild","replaceChild"];
+    Element.prototype.insertAdjacentElement =
+            Element.prototype.insertBefore =
+                    Element.prototype.appendChild =
+                            Element.prototype.replaceChild = function(){};
+    Object.defineProperty(Element.prototype, "innerHTML", {
+        set: function () {}
+    });
+    Object.defineProperty(Element.prototype, "outerHTML", {
+        set: function () {}
+    });
+
+    for( i = array.length;i--;){
+        try{
+            console.info(array[i],window[array[i]])
+        }catch(e){
+            console.error(array[i]);
+        }
+    }
+    k();
+</script>
+</body>
+</html>

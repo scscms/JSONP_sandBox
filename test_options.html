@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSONP测试</title>
+</head>
+<body>
+<script type="text/javascript" src="../jsonp-sandbox.js"></script>
+<script type="text/javascript">
+    function fun(obj){
+        console.log(obj);
+    }
+    function fun2(obj){
+        console.info(obj);
+    }
+    //option为可先参数
+    //JSONP.get("http://www.scscms.com/1/php.php?callback=fun&type=no_option");
+
+    /*option.url会覆盖前面的url
+    JSONP.get("http://www.scscms.com/1/php.php?callback=fun&type=no_option",{
+        url:"http://www.scscms.com/1/php.php?callback=fun2&type=no_option"
+    });
+    */
+
+    /*option.success成功回调函数
+    如果success返回false将阻止callback回调
+    */
+     JSONP.get("http://www.scscms.com/1/php.php",{
+         callback:"fun20",
+         data:{type:"no_option"},
+         success:function(obj){
+             console.log(obj);
+             //当callback不是有效函数或此处返回false都将不触发callback函数
+             return false;
+         }
+     });
+</script>
+</body>
+</html>

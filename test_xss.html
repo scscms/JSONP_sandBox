@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSONP测试防xss功能</title>
+</head>
+<body>
+<script type="text/javascript" src="../jsonp-sandbox.js"></script>
+<script type="text/javascript">
+    function fun(obj){
+        console.log(obj);
+    }
+    /*
+    * 请求后看是否禁止了jsonp的alert等函数。
+    * JSONP.get("http://www.scscms.com/1/php.php?callback=fun&type=xss");
+    * */
+
+    /*
+     *IE10-11正常回调函数，但未能禁止location跳转
+     *IE9及以下正常回调函数，并成功禁止location跳转
+     *chrome\firefox下正常回调函数，并成功禁止location跳转
+     * JSONP.get("http://www.scscms.com/1/php.php?callback=fun&type=location");
+     * */
+
+
+    /*
+    * 当JSON所在页面访问top和parent时：
+    * IE8及以下，top、parent已经是变成空函数，无法访问顶部框架
+    * IE9能正常访问top、parent。失败！
+    * IE10及chrome、firefox拒绝访问top、parent的属性（沙箱作用）。
+    * */
+    JSONP.get("http://www.scscms.com/1/php.php?callback=fun&type=top");
+</script>
+</body>
+</html>

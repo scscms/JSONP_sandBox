@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSONP测试</title>
+</head>
+<body>
+<script type="text/javascript" src="../jsonp-sandbox.js"></script>
+<script type="text/javascript">
+    /*
+    * key及callback测试：
+    * 假如都不指定 将返回 jsonp.js?callback=_4021da4acf
+    * 只指定key=call 将返回 jsonp.js?call=_4021da4acf
+    * 指定key=call,callback=f 将返回 jsonp.js?call=f
+    * 指定key=call,callback=f且url含?call=fun将返回 jsonp.js?call=fun
+    * 即url指定值最高
+    * */
+    function fun(obj){
+        console.log(obj);
+    }
+    JSONP.get('http://www.scscms.com/1/php.php?callback=fun', {
+        key: "callback",
+        error:function(msg){
+            //msg = noAnswer 请求成功，但并没有触发函数
+            //msg = urlError 链接地址出错
+            //msg = timeOut 链接地址出错
+            console.log("错误:",msg);
+        },
+        callback: "fun"
+    });
+</script>
+</body>
+</html>

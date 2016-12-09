@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSONP测试缓存功能</title>
+</head>
+<body>
+<button type="button" onclick="ajax()">再次请求</button>
+<script type="text/javascript" src="../jsonp-sandbox.js"></script>
+<script type="text/javascript">
+    function fun(obj){
+        console.log(obj);
+    }
+    /*
+    * 当没有设置禁用缓存时，当第一次jsonp请求成功，如果再次请求将直接使用缓存。
+    * */
+    function ajax(){
+        var _t = +new Date();
+        JSONP.get("http://www.scscms.com/1/php.php",{
+            callback:"fun",
+            data:{type:"no_option"},
+            success:function(obj){
+                console.log("耗时：%d毫秒",+new Date() - _t);
+            }
+        });
+    }
+</script>
+</body>
+</html>
